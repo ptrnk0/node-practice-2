@@ -8,6 +8,11 @@ import {
   updateProductController,
 } from '../controllers/products.js';
 import validateId from '../middlewares/validateId.js';
+import {
+  createProductSchema,
+  updateProductSchema,
+} from '../validation/products.js';
+import { validateBody } from '../middlewares/validateBody.js';
 
 const app = Router();
 
@@ -17,10 +22,16 @@ app.get(
   validateId,
   ctrlWrapper(getProductByIdController),
 );
-app.post('/products', ctrlWrapper(createProductController));
+app.post(
+  '/products',
+  validateBody(createProductSchema),
+  ctrlWrapper(createProductController),
+);
 app.patch(
   '/products/:productId',
+
   validateId,
+  validateBody(updateProductSchema),
   ctrlWrapper(updateProductController),
 );
 app.delete(
