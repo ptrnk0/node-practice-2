@@ -17,3 +17,7 @@ export async function updateProduct(productId, product) {
     new: true,
   });
 }
+
+export async function deleteProduct(productId) {
+  return await ProductModel.findByIdAndDelete(productId);
+}
