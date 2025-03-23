@@ -16,28 +16,20 @@ import { validateBody } from '../middlewares/validateBody.js';
 
 const app = Router();
 
-app.get('/products', ctrlWrapper(getAllProductsController));
-app.get(
-  '/products/:productId',
-  validateId,
-  ctrlWrapper(getProductByIdController),
-);
+app.get('/', ctrlWrapper(getAllProductsController));
+app.get('/:productId', validateId, ctrlWrapper(getProductByIdController));
 app.post(
-  '/products',
+  '/',
   validateBody(createProductSchema),
   ctrlWrapper(createProductController),
 );
 app.patch(
-  '/products/:productId',
+  '/:productId',
 
   validateId,
   validateBody(updateProductSchema),
   ctrlWrapper(updateProductController),
 );
-app.delete(
-  '/products/:productId',
-  validateId,
-  ctrlWrapper(deleteProductController),
-);
+app.delete('/:productId', validateId, ctrlWrapper(deleteProductController));
 
 export default app;
