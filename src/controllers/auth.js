@@ -1,5 +1,6 @@
-import { loginUser, registerUser } from '../services/auth.js';
+import { loginUser, logoutUser, registerUser } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
+import createHttpError from 'http-errors';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
@@ -29,4 +30,22 @@ export const loginUserController = async (req, res) => {
     message: 'Successfully logged in an user',
     data: { accessToken: session.accessToken },
   });
+};
+
+export const logoutUserController = async (req, res) => {
+  const { sessionId } = req.cookies;
+  let session;
+
+  if (sessionId) {
+    session = await logoutUser(sessionId);
+  }
+
+  if (!session) {
+    throw createHttpError(401);
+  }
+
+  res.clearCookie('sessionId');
+  res.clearCookie('refreshToken');
+
+  res.status(204).send();
 };
