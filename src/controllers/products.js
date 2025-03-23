@@ -10,7 +10,11 @@ import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export async function getAllProductsController(req, res) {
   const filteredParams = parseFilterParams(req.query);
-  const products = await getProducts(filteredParams);
+
+  const products = await getProducts({
+    filteredParams,
+    userId: req.user,
+  });
 
   res.status(200).json({
     status: 200,
@@ -21,7 +25,7 @@ export async function getAllProductsController(req, res) {
 
 export async function getProductByIdController(req, res) {
   const { productId } = req.params;
-  const product = await getProductById(productId);
+  const product = await getProductById(productId, req.user);
 
   if (!product) {
     throw createHttpError(404, 'Product not found');
@@ -35,7 +39,13 @@ export async function getProductByIdController(req, res) {
 }
 
 export async function createProductController(req, res) {
-  const product = await createProduct(req.body);
+  console.log('USerId', req.user);
+
+  const product = await createProduct({
+    ...req.body,
+    userId: req.user.toString(),
+  });
+
   res.status(201).json({
     status: 201,
     message: 'Product created!',
@@ -46,7 +56,7 @@ export async function createProductController(req, res) {
 export async function updateProductController(req, res) {
   const { productId } = req.params;
   const product = req.body;
-  const result = await updateProduct(productId, product);
+  const result = await updateProduct(productId, req.user, product);
   if (result === null) {
     throw createHttpError(404, 'Product not found');
   }
@@ -59,7 +69,7 @@ export async function updateProductController(req, res) {
 
 export async function deleteProductController(req, res) {
   const { productId } = req.params;
-  const product = await deleteProduct(productId);
+  const product = await deleteProduct(productId, req.user);
 
   if (!product) {
     throw createHttpError(404, 'Product not found');
