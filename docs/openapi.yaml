@@ -13,7 +13,9 @@ tags:
 servers:
   - url: http://localhost:3000
 paths:
-  # тут будуть посилання на ендпоінти
+  /products:
+    get:
+      $ref: ../swagger/path/products/get.yaml
 components:
   securitySchemes:
     bearerAuth:
