@@ -23,6 +23,8 @@ paths:
       $ref: '../swagger/path/products/{id}/get.yaml'
     patch:
       $ref: '../swagger/path/products/{id}/patch.yaml'
+    delete:
+      $ref: '../swagger/path/products/{id}/delete.yaml'
 
 components:
   securitySchemes:
