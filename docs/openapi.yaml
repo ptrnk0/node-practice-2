@@ -21,6 +21,8 @@ paths:
   /products/{productId}:
     get:
       $ref: '../swagger/path/products/{id}/get.yaml'
+    patch:
+      $ref: '../swagger/path/products/{id}/patch.yaml'
 
 components:
   securitySchemes:
